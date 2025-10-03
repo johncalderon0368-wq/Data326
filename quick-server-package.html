@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Quick Server Package Creator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+</head>
+<body class="bg-gray-50 p-8">
+    <div class="max-w-2xl mx-auto">
+        <h1 class="text-2xl font-bold mb-4">🚀 Emergency Server Package</h1>
+        <p class="mb-4">This will create the exact files Railway needs, from scratch!</p>
+        
+        <button id="createServer" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">
+            Create Working Server Package
+        </button>
+        
+        <div id="status" class="mt-4"></div>
+    </div>
+
+    <script>
+        document.getElementById('createServer').onclick = async function() {
+            const zip = new JSZip();
+            
+            // Create package.json
+            const packageJson = {
+                "name": "voice-agent-server",
+                "version": "1.0.0",
+                "main": "server.js",
+                "scripts": {
+                    "start": "node server.js"
+                },
+                "engines": {
+                    "node": "18.x"
+                },
+                "dependencies": {
+                    "express": "^4.18.0",
+                    "cors": "^2.8.5"
+                }
+            };
+            
+            // Create simple working server
+            const serverCode = \`const express = require('express');
+const cors = require('cors');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.use(cors());
+app.use(express.json());
+
+app.get('/', (req, res) => {
+    res.json({ 
+        message: 'Voice Agent Brain Server Running!',
+        status: 'healthy',
+        timestamp: new Date().toISOString()
+    });
+});
+
+app.get('/health', (req, res) => {
+    res.json({ status: 'healthy' });
+});
+
+app.post('/api/chat', (req, res) => {
+    const { message } = req.body || {};
+    res.json({ 
+        response: \\\`Hello! I received: "\\\${message}". Your AI brain is working!\\\`,
+        timestamp: new Date().toISOString()
+    });
+});
+
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(\\\`🚀 Server running on port \\\${PORT}\\\`);
+});\`;
+
+            zip.file('package.json', JSON.stringify(packageJson, null, 2));
+            zip.file('server.js', serverCode);
+            
+            const content = await zip.generateAsync({type: 'blob'});
+            const url = URL.createObjectURL(content);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'working-server-railway.zip';
+            a.click();
+            
+            document.getElementById('status').innerHTML = \`
+                <div class="bg-green-100 p-4 rounded-lg">
+                    ✅ Created! Upload this ZIP to Railway.<br>
+                    📁 Contains: server.js + package.json<br>
+                    🎯 Railway will detect this as Node.js and build successfully!
+                </div>
+            \`;
+        };
+    </script>
+</body>
+</html>\`;
+
+            zip.file('package.json', JSON.stringify(packageJson, null, 2));
+            zip.file('server.js', serverCode);
+            
+            const content = await zip.generateAsync({type: 'blob'});
+            const url = URL.createObjectURL(content);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'working-server-railway.zip';
+            a.click();
+            
+            document.getElementById('status').innerHTML = `
+                <div class="bg-green-100 p-4 rounded-lg">
+                    ✅ Created! Upload this ZIP to Railway.<br>
+                    📁 Contains: server.js + package.json<br>
+                    🎯 Railway will detect this as Node.js and build successfully!
+                </div>
+            `;
+        };
+    </script>
+</body>
+</html>
