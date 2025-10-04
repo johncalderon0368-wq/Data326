@@ -1,0 +1,22 @@
+{
+  "name": "voice-agent-brain",
+  "version": "1.0.0",
+  "description": "AI Voice Agent Brain Server for aiworkflowadvisors.com",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": "18.x"
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0",
+    "compression": "^1.7.4"
+  },
+  "keywords": ["voice-agent", "ai", "n8n", "workflow", "automation"],
+  "author": "AI Workflow Advisors",
+  "license": "MIT"
+}
